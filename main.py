@@ -18,6 +18,15 @@ def render():
         )
     if LINE.strip() != LINE or "\n" in LINE:
         raise ValueError("excuse line must be a single line with no padding")
+    # The gate counts characters while the leaderboard's Size column counts
+    # bytes: plain ASCII makes the two counts agree, so the line can never
+    # pass one measure and fail the other.
+    encoded = LINE.encode("utf-8")
+    if len(encoded) != len(LINE):
+        raise ValueError(
+            f"excuse line is {len(encoded)} bytes for {len(LINE)} characters, "
+            "so it is not plain ASCII"
+        )
     return LINE
 
 
